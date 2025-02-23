@@ -1,21 +1,13 @@
-# Hello
+# Elixir lesson progress
 
-**TODO: Add description**
+## Elixir Course Author links
 
-## Installation
+## https://rutube.ru/channel/38124338/
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `hello` to your list of dependencies in `mix.exs`:
+## https://boosty.to/yury.zhloba
 
-```elixir
-def deps do
-  [
-    {:hello, "~> 0.1.0"}
-  ]
-end
-```
+## https://vk.com/yzh44yzh
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/hello>.
+## https://github.com/yzh44yzh/elixir_course
 
+## https://github.com/yzh44yzh/elixir_course_2
