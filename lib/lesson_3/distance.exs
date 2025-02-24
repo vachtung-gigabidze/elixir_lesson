@@ -1,7 +1,6 @@
 defmodule Distance do
-
-  def distance({:point, x1, y1} , {:point, x2, y2} ) do
-    :math.pow((x1 - x2), 2) + :math.pow((y1 - y2), 2)
+  def distance({:point, x1, y1}, {:point, x2, y2}) do
+    (:math.pow(x1 - x2, 2) + :math.pow(y1 - y2, 2))
     |> :math.sqrt()
     |> Float.round()
   end
@@ -9,12 +8,12 @@ defmodule Distance do
   def point_inside_figure?(point, {:circle, center, radius}) do
     distance(point, center) <= radius
   end
+
   def point_inside_figure?({:point, x, y}, {:rect, tl, br}) do
     {:point, left_x, top_y} = tl
     {:point, right_x, bottom_y} = br
     # dbg({top_y, y, bottom_y})
     x <= right_x and x >= left_x and y >= top_y and y <= bottom_y
-
   end
 end
 
@@ -31,12 +30,10 @@ defmodule DistanceTest do
   end
 
   test "distance crash" do
-
     p = {:point, 10, 1000}
     r = {:rect, {:point, 5, 5}, {:point, 50, 50}}
     assert_raise FunctionClauseError, fn -> distance(p, r) end
   end
-
 
   test "Point inside circle" do
     p1 = {:point, 10, 10}
@@ -53,7 +50,7 @@ defmodule DistanceTest do
     p1 = {:point, 10, 10}
     p2 = {:point, 10, -50}
     p3 = {:point, 10, 1000}
-    r = {:rect, {:point, 5,5}, {:point, 50, 50}}
+    r = {:rect, {:point, 5, 5}, {:point, 50, 50}}
 
     assert point_inside_figure?(p1, r)
     refute point_inside_figure?(p2, r)
