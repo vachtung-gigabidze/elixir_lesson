@@ -16,10 +16,10 @@ defmodule TicTacToe do
   @spec check_who_win(game_state) :: game_result
   def check_who_win(state) do
     cond do
-      check_rows(board) == :x || check_columns(board) == :x || check_diagonals(board) == :x ->
+      check_rows(state) == :x || check_columns(state) == :x || check_diagonals(state) == :x ->
         {:win, :x}
 
-      check_rows(board) == :o || check_columns(board) == :o || check_diagonals(board) == :o ->
+      check_rows(state) == :o || check_columns(state) == :o || check_diagonals(state) == :o ->
         {:win, :o}
 
       true ->
@@ -28,18 +28,25 @@ defmodule TicTacToe do
   end
 
   # Проверка строк
-  # defp check_rows(board) do
-  #   Enum.find_value(Tuple.to_list(board), fn row ->
-  #     Enum.all?(Tuple.to_list(row), do: row |> Tuple.to_list() |> List.first() )
-  # end
+  defp check_rows(state) do
+    List.first(
+      Enum.find(matrix, fn row ->
+        first_element = List.first(row)
+        Enum.all?(row, fn element -> element == first_element end)
+      end)
+    )
+  end
 
-  # # Проверка столбцов
-  # defp check_columns(board) do
-  #   Enum.find_value(0..2, fn col ->
-  #     column = Enum.map(Tuple.to_list(board), fn row -> elem(row, col) end)
-  #      Enum.all?(column, &(&1 == List.first(column)) && List.first(column) != :f, do: List.first(column)
-  #   )
-  # end
+  # Проверка столбцов
+  defp check_columns(state) do
+    num_columns = length(List.first(state))
+
+    # Перебираем индексы столбцов
+    Enum.map(0..(num_columns - 1), fn col_index ->
+      # Собираем элементы столбца
+      Enum.map(state, fn row -> Enum.at(row, col_index) end)
+    end)
+  end
 
   # # Проверка диагоналей
   # defp check_diagonals(board) do
