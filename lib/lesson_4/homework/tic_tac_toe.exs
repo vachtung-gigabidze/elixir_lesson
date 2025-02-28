@@ -5,68 +5,43 @@ defmodule TicTacToe do
   @type game_result :: {:win, :x} | {:win, :o} | :no_win
 
   @spec valid_game?(game_state) :: boolean
-  def valid_game?(state) do
-    tuple_size(state) == 3 &&
-      Enum.all?(Tuple.to_list(state), fn row -> tuple_size(row) == 3 end) &&
-      Enum.all?(Tuple.to_list(state), fn row ->
-        Enum.all?(Tuple.to_list(row), fn cell -> cell in @valid_cells end)
-      end)
+  def valid_game?(board) do
+    is_valid_structure?(board) && is_valid_cells?(board)
   end
 
-  @spec check_who_win(game_state) :: game_result
-  def check_who_win(state) do
-    cond do
-      check_rows(state) == :x || check_columns(state) == :x || check_diagonals(state) == :x ->
-        {:win, :x}
+  @valid_cells [:x, :o, :f]
 
-      check_rows(state) == :o || check_columns(state) == :o || check_diagonals(state) == :o ->
-        {:win, :o}
-
-      true ->
-        :no_win
-    end
+  defp is_valid_structure?(board) do
+    tuple_size(board) == 3 &&
+      Enum.all?(Tuple.to_list(board), fn row -> tuple_size(row) == 3 end)
   end
 
-  # Проверка строк
-  defp check_rows(state) do
-    List.first(
-      Enum.find(matrix, fn row ->
-        first_element = List.first(row)
-        Enum.all?(row, fn element -> element == first_element end)
-      end)
-    )
-  end
-
-  # Проверка столбцов
-  defp check_columns(state) do
-    num_columns = length(List.first(state))
-
-    # Перебираем индексы столбцов
-    Enum.map(0..(num_columns - 1), fn col_index ->
-      # Собираем элементы столбца
-      Enum.map(state, fn row -> Enum.at(row, col_index) end)
+  defp is_valid_cells?(board) do
+    Enum.all?(Tuple.to_list(board), fn row ->
+      Enum.all?(Tuple.to_list(row), fn cell -> cell in @valid_cells end)
     end)
   end
 
-  defp check_column(col) do
-    {c1, c2, c3} = col
-    c1 == c2 == c3
-  end
-
-  # Проверка диагоналей
-  defp check_diagonals(board) do
-    diagonal1 = [elem(elem(board, 0), 0), elem(elem(board, 1), 1), elem(elem(board, 2), 2)]
-    diagonal2 = [elem(elem(board, 0), 2), elem(elem(board, 1), 1), elem(elem(board, 2), 0)]
-
-    cond do
-      Enum.all?(diagonal1, &(&1 == List.first(diagonal1) && List.first(diagonal1) != :f)) ->
-        List.first(diagonal1)
-
-      Enum.all?(diagonal2, &(&1 == List.first(diagonal2) && List.first(diagonal2) != :f)) ->
-        List.first(diagonal2)
-
-      true ->
-        nil
+  @spec check_who_win(game_state) :: game_result
+  def check_who_win(game_state) do
+    case game_state do
+      {{:x, :x, :x}, _, _} -> {:win, :x}
+      {_, {:x, :x, :x}, _} -> {:win, :x}
+      {_, _, {:x, :x, :x}} -> {:win, :x}
+      {{:x, _, _}, {:x, _, _}, {:x, _, _}} -> {:win, :x}
+      {{_, :x, _}, {_, :x, _}, {_, :x, _}} -> {:win, :x}
+      {{_, _, :x}, {_, _, :x}, {_, _, :x}} -> {:win, :x}
+      {{:x, _, _}, {_, :x, _}, {_, _, :x}} -> {:win, :x}
+      {{_, _, :x}, {_, :x, _}, {:x, _, _}} -> {:win, :x}
+      {{:o, :o, :o}, _, _} -> {:win, :o}
+      {_, {:o, :o, :o}, _} -> {:win, :o}
+      {_, _, {:o, :o, :o}} -> {:win, :o}
+      {{:o, _, _}, {:o, _, _}, {:o, _, _}} -> {:win, :o}
+      {{_, :o, _}, {_, :o, _}, {_, :o, _}} -> {:win, :o}
+      {{_, _, :o}, {_, _, :o}, {_, _, :o}} -> {:win, :o}
+      {{:o, _, _}, {_, :o, _}, {_, _, :o}} -> {:win, :o}
+      {{_, _, :o}, {_, :o, _}, {:o, _, _}} -> {:win, :o}
+      _ -> :no_win
     end
   end
 end
