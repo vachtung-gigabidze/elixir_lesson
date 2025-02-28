@@ -48,18 +48,25 @@ defmodule TicTacToe do
     end)
   end
 
-  # # Проверка диагоналей
-  # defp check_diagonals(board) do
-  #   diagonal1 = [elem(elem(board, 0), 0), elem(elem(board, 1), 1), elem(elem(board, 2), 2)]
-  #   diagonal2 = [elem(elem(board, 0), 2), elem(elem(board, 1), 1), elem(elem(board, 2), 0)]
+  defp check_column(col) do
+    {c1, c2, c3} = col
+    c1 == c2 == c3
+  end
 
-  #   cond do
-  #     Enum.all?(diagonal1, &(&1 == List.first(diagonal1)) && List.first(diagonal1) != :f) ->
-  #       List.first(diagonal1)
-  #     Enum.all?(diagonal2, &(&1 == List.first(diagonal2)) && List.first(diagonal2) != :f) ->
-  #       List.first(diagonal2)
-  #     true ->
-  #       nil
-  #   end
-  # end
+  # Проверка диагоналей
+  defp check_diagonals(board) do
+    diagonal1 = [elem(elem(board, 0), 0), elem(elem(board, 1), 1), elem(elem(board, 2), 2)]
+    diagonal2 = [elem(elem(board, 0), 2), elem(elem(board, 1), 1), elem(elem(board, 2), 0)]
+
+    cond do
+      Enum.all?(diagonal1, &(&1 == List.first(diagonal1) && List.first(diagonal1) != :f)) ->
+        List.first(diagonal1)
+
+      Enum.all?(diagonal2, &(&1 == List.first(diagonal2) && List.first(diagonal2) != :f)) ->
+        List.first(diagonal2)
+
+      true ->
+        nil
+    end
+  end
 end
